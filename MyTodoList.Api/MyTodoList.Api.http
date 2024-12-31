@@ -1,0 +1,6 @@
+@MyTodoList.Api_HostAddress = http://localhost:5068
+
+GET {{MyTodoList.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
