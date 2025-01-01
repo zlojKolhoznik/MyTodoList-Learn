@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using MyTodoList.Api.Authentication;
 using MyTodoList.Api.Services;
 using MyTodoList.Data;
+using MyTodoList.Data.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);

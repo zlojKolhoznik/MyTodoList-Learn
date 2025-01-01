@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MyTodoList.Data;
+using MyTodoList.Data.Models;
 
 namespace MyTodoList.Api.Authentication
 {
