@@ -39,7 +39,7 @@ MyTodoList is a simple and efficient API designed to help users manage their tas
     ```bash
     dotnet ef database update
     ```
-5. Set required user secrets
+5. Set required user secrets (make sure your key is at least 256 bits)
     ```bash
     dotnet user-secrets init
     dotnet user-secrets set "Jwt:Key" "[YOUR_JWT_KEY]"
