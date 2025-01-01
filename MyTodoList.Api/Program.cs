@@ -6,6 +6,7 @@ using MyTodoList.Api.Authentication;
 using MyTodoList.Api.Services;
 using MyTodoList.Data;
 using MyTodoList.Data.Models;
+using MyTodoList.Data.Repositories;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -47,6 +48,7 @@ builder.Services.AddDbContext<ApiDbContext>(options => options.UseMySQL(builder.
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IToDoItemRepository, ToDoItemRepository>();
 
 var app = builder.Build();
 

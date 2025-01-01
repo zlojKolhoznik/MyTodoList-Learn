@@ -8,7 +8,6 @@ namespace MyTodoList.Api.Services
 {
     public class JwtService : IJwtService
     {
-        private const string UserIdClaimType = "UserId";
         private const string UserNameClaimType = "UserName";
 
         private readonly IConfiguration _configuration;
@@ -24,10 +23,10 @@ namespace MyTodoList.Api.Services
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             List<Claim> claims = [
-                new Claim(UserIdClaimType, user.Id),
                 new Claim(UserNameClaimType, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.NormalizedUserName),
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
                 ];
             var token = new JwtSecurityToken(
                     issuer: _configuration["Jwt:Issuer"],
