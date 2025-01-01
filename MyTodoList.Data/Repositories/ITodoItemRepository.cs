@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MyTodoList.Data.Repositories
 {
-    public interface ITodoItemRepository
+    public interface IToDoItemRepository
     {
         Task<FullToDoItem> GetByIdAsync(int id, string? includeProperties = null);
         Task<List<FullToDoItem>> GetAllAsync(string? includeProperties = null);

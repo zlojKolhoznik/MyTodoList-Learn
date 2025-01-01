@@ -6,7 +6,7 @@ using MyTodoList.Data.Models;
 
 namespace MyTodoList.Data.Repositories
 {
-    public class ToDoItemRepository : ITodoItemRepository
+    public class ToDoItemRepository : IToDoItemRepository
     {
         private readonly ApiDbContext _context;
         private readonly IMapper _mapper;

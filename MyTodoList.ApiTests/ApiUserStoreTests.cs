@@ -8,8 +8,8 @@ namespace MyTodoList.Api.Tests;
 
 public class ApiUserStoreTests
 {
-    private ApiDbContext _context;
-    private ApiUserStore _userStore;
+    private ApiDbContext _context = default!;
+    private ApiUserStore _userStore = default!;
 
     [SetUp]
     public void Setup()

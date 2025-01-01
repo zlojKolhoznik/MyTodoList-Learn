@@ -11,9 +11,9 @@ namespace MyTodoList.Api.Tests;
 
 public class AuthenticationControllerTests
 {
-    private Mock<UserManager<User>> _mockUserManager;
-    private Mock<IJwtService> _mockJwtService;
-    private AuthenticationController _controller;
+    private Mock<UserManager<User>> _mockUserManager = default!;
+    private Mock<IJwtService> _mockJwtService = default!;
+    private AuthenticationController _controller = default!;
 
     [SetUp]
     public void Setup()
