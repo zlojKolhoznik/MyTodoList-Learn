@@ -1,0 +1,13 @@
+﻿C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\ApiDbContext.cs
+C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\Dto\BriefToDoItem.cs
+C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\Dto\FullToDoItem.cs
+C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\Exceptions\ToDoItemNotFoundException.cs
+C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\Migrations\20250101122715_InitialCreate.cs
+C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\Migrations\20250101122715_InitialCreate.Designer.cs
+C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\Migrations\20250101175258_AddedToDoItems.cs
+C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\Migrations\20250101175258_AddedToDoItems.Designer.cs
+C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\Migrations\ApiDbContextModelSnapshot.cs
+C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\Models\ToDoItem.cs
+C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\Models\User.cs
+C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\Repositories\IToDoItemRepository.cs
+C:\Users\Roman\source\repos\MyTodoList\MyToDoList.Data\Repositories\TodoItemRepository.cs

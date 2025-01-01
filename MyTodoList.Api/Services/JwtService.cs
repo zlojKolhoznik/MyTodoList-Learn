@@ -20,13 +20,13 @@ namespace MyTodoList.Api.Services
         public string Generate(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             List<Claim> claims = [
-                new Claim(UserNameClaimType, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, user.NormalizedUserName),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new(UserNameClaimType, user.UserName!),
+                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new(JwtRegisteredClaimNames.UniqueName, user.NormalizedUserName!),
+                new(ClaimTypes.NameIdentifier, user.Id),
                 ];
             var token = new JwtSecurityToken(
                     issuer: _configuration["Jwt:Issuer"],

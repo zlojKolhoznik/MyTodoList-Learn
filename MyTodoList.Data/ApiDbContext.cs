@@ -10,9 +10,9 @@ namespace MyTodoList.Data
 
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<User> Users { get; set; } = default!;
 
-        public DbSet<ToDoItem> ToDoItems { get; set; }
+        public DbSet<ToDoItem> ToDoItems { get; set; } = default!;
 
         override protected void OnModelCreating(ModelBuilder modelBuilder)
         {

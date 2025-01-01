@@ -71,19 +71,19 @@ namespace MyTodoList.Api.Authentication
             return user;
         }
 
-        public async Task<string?> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
+        public Task<string?> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
         {
-            return user.NormalizedUserName;
+            return Task.FromResult(user.NormalizedUserName);
         }
 
-        public async Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
+        public Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
         {
-            return user.Id;
+            return Task.FromResult(user.Id);
         }
 
-        public async Task<string?> GetUserNameAsync(User user, CancellationToken cancellationToken)
+        public Task<string?> GetUserNameAsync(User user, CancellationToken cancellationToken)
         {
-            return user.UserName;
+            return Task.FromResult(user.UserName);
         }
 
         public async Task SetNormalizedUserNameAsync(User user, string? normalizedName, CancellationToken cancellationToken)
@@ -125,14 +125,14 @@ namespace MyTodoList.Api.Authentication
             }
         }
 
-        public async Task<string?> GetPasswordHashAsync(User user, CancellationToken cancellationToken)
+        public Task<string?> GetPasswordHashAsync(User user, CancellationToken cancellationToken)
         {
-            return user.PasswordHash;
+            return Task.FromResult(user.PasswordHash);
         }
 
-        public async Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
+        public Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
         {
-            return !string.IsNullOrEmpty(user.PasswordHash);
+            return Task.FromResult(!string.IsNullOrEmpty(user.PasswordHash));
         }
 
         private async Task ValidateUserExists(string userId)

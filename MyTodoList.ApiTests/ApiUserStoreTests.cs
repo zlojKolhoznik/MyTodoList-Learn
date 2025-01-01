@@ -183,7 +183,7 @@ public class ApiUserStoreTests
         var passwordHash = "passwordhash";
         await _userStore.SetPasswordHashAsync(user, passwordHash, CancellationToken.None);
         var userFromDb = await _context.Users.FirstOrDefaultAsync(u => u.Id == "1");
-        Assert.That(userFromDb.PasswordHash, Is.EqualTo(passwordHash));
+        Assert.That(userFromDb!.PasswordHash, Is.EqualTo(passwordHash));
     }
 
     [Test]
@@ -268,7 +268,7 @@ public class ApiUserStoreTests
         var normalizedName = "NEWUSER";
         await _userStore.SetNormalizedUserNameAsync(user, normalizedName, CancellationToken.None);
         var userFromDb = await _context.Users.FirstOrDefaultAsync(u => u.Id == "1");
-        Assert.That(userFromDb.NormalizedUserName, Is.EqualTo(normalizedName));
+        Assert.That(userFromDb!.NormalizedUserName, Is.EqualTo(normalizedName));
     }
 
     [Test]
@@ -285,7 +285,7 @@ public class ApiUserStoreTests
         var userName = "newuser";
         await _userStore.SetUserNameAsync(user, userName, CancellationToken.None);
         var userFromDb = await _context.Users.FirstOrDefaultAsync(u => u.Id == "1");
-        Assert.That(userFromDb.UserName, Is.EqualTo(userName));
+        Assert.That(userFromDb!.UserName, Is.EqualTo(userName));
     }
 
     [Test]
