@@ -1,9 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyTodoList.Data
 {
@@ -21,6 +16,7 @@ namespace MyTodoList.Data
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(u => u.Id);
+                entity.HasIndex(u => u.NormalizedUserName).IsUnique();
                 entity.Property(u => u.UserName).HasMaxLength(256);
                 entity.Property(u => u.NormalizedUserName).HasMaxLength(256);
             });

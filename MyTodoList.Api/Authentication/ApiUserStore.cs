@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MyTodoList.Data;
 
 namespace MyTodoList.Api.Authentication
@@ -14,16 +15,32 @@ namespace MyTodoList.Api.Authentication
 
         public async Task<IdentityResult> CreateAsync(User user, CancellationToken cancellationToken)
         {
-            await _context.Users.AddAsync(user, cancellationToken);
-            await _context.SaveChangesAsync(cancellationToken);
-            return IdentityResult.Success;
+            try
+            {
+                await ValidateUserDoesNotExist(user.Id);
+                await _context.Users.AddAsync(user, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
+                return IdentityResult.Success;
+            }
+            catch (Exception ex)
+            {
+                return CreateFailedResult("UserExists", ex.Message);
+            }
         }
 
         public async Task<IdentityResult> DeleteAsync(User user, CancellationToken cancellationToken)
         {
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync(cancellationToken);
-            return IdentityResult.Success;
+            try
+            {
+                await ValidateUserExists(user.Id);
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync(cancellationToken);
+                return IdentityResult.Success;
+            }
+            catch (InvalidOperationException ex)
+            {
+                return CreateFailedResult("UserNotFound", ex.Message);
+            }
         }
 
         public void Dispose()
@@ -41,66 +58,67 @@ namespace MyTodoList.Api.Authentication
             // Dispose unmanaged resources
         }
 
-        public Task<User?> FindByIdAsync(string userId, CancellationToken cancellationToken)
+        public async Task<User?> FindByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == userId);
-            return Task.FromResult(user);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == userId, cancellationToken);
+            return user;
         }
 
-        public Task<User?> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+        public async Task<User?> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
-            var user = _context.Users.FirstOrDefault(u => u.NormalizedUserName == normalizedUserName);
-            return Task.FromResult(user);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.NormalizedUserName == normalizedUserName, cancellationToken);
+            return user;
         }
 
-        public Task<string?> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
+        public async Task<string?> GetNormalizedUserNameAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.NormalizedUserName);
+            var userFromDb = await _context.Users.FirstAsync(u => u.Id == user.Id, cancellationToken);
+            return userFromDb.NormalizedUserName;
         }
 
-        public Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
+        public async Task<string> GetUserIdAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.Id);
+            return user.Id;
         }
 
-        public Task<string?> GetUserNameAsync(User user, CancellationToken cancellationToken)
+        public async Task<string?> GetUserNameAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.UserName);
+            var userFromDb = await _context.Users.FirstAsync(u => u.Id == user.Id, cancellationToken);
+            return userFromDb.UserName;
         }
 
-        public Task SetNormalizedUserNameAsync(User user, string? normalizedName, CancellationToken cancellationToken)
+        public async Task SetNormalizedUserNameAsync(User user, string? normalizedName, CancellationToken cancellationToken)
         {
             user.NormalizedUserName = normalizedName;
-            return Task.CompletedTask;
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task SetUserNameAsync(User user, string? userName, CancellationToken cancellationToken)
+        public async Task SetUserNameAsync(User user, string? userName, CancellationToken cancellationToken)
         {
             user.UserName = userName;
-            return Task.CompletedTask;
+            await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken)
+        public async Task<IdentityResult> UpdateAsync(User user, CancellationToken cancellationToken)
         {
             try
             {
-                ValidateUserExists(user.Id);
-                UpdateUser(user);
-                return Task.FromResult(IdentityResult.Success);
+                await ValidateUserExists(user.Id);
+                await UpdateUser(user);
+                return IdentityResult.Success;
             }
             catch (InvalidOperationException ex)
             {
-                return Task.FromResult(CreateFailedResult("UserNotFound", ex.Message));
+                return CreateFailedResult("UserNotFound", ex.Message);
             }
         }
 
-        public Task SetPasswordHashAsync(User user, string? passwordHash, CancellationToken cancellationToken)
+        public async Task SetPasswordHashAsync(User user, string? passwordHash, CancellationToken cancellationToken)
         {
             try
             {
-                ValidateUserExists(user.Id);
                 user.PasswordHash = passwordHash;
-                return Task.CompletedTask;
+                await _context.SaveChangesAsync(cancellationToken);
             }
             catch (InvalidOperationException ex)
             {
@@ -108,30 +126,41 @@ namespace MyTodoList.Api.Authentication
             }
         }
 
-        public Task<string?> GetPasswordHashAsync(User user, CancellationToken cancellationToken)
+        public async Task<string?> GetPasswordHashAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.PasswordHash);
+            var userFromDb = await _context.Users.FirstAsync(u => u.Id == user.Id, cancellationToken);
+            return userFromDb.PasswordHash;
         }
 
-        public Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
+        public async Task<bool> HasPasswordAsync(User user, CancellationToken cancellationToken)
         {
-            return Task.FromResult(user.PasswordHash is not null);
+            var userFromDb = await _context.Users.FirstAsync(u => u.Id == user.Id, cancellationToken);
+            return userFromDb.PasswordHash is not null;
         }
 
-        private void ValidateUserExists(string userId)
+        private async Task ValidateUserExists(string userId)
         {
-            if (_context.Users.FirstOrDefault(u => u.Id == userId) is null)
+            if (await _context.Users.FirstOrDefaultAsync(u => u.Id == userId) is null)
             {
-                throw new InvalidOperationException($"User with id {userId} not found");
+                throw new InvalidOperationException($"User with id {userId} does not exist.");
             }
         }
 
-        private void UpdateUser(User user)
+        private async Task ValidateUserDoesNotExist(string userId)
         {
-            var existingUser = _context.Users.First(u => u.Id == user.Id);
+            if (await _context.Users.AnyAsync(u => u.Id == userId))
+            {
+                throw new InvalidOperationException($"User with id {userId} already exists.");
+            }
+        }
+
+        private async Task UpdateUser(User user)
+        {
+            var existingUser = await _context.Users.FirstAsync(u => u.Id == user.Id);
             existingUser.UserName = user.UserName;
             existingUser.NormalizedUserName = user.NormalizedUserName;
             existingUser.PasswordHash = user.PasswordHash;
+            await _context.SaveChangesAsync();
         }
 
         private IdentityResult CreateFailedResult(string code, string description)

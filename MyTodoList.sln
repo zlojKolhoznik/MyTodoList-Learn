@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35514.174 d17.12
+VisualStudioVersion = 17.12.35514.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTodoList.Api", "MyTodoList.Api\MyTodoList.Api.csproj", "{96D0FF60-8F11-422B-8174-4934CEEFFA85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTodoList.ApiTests", "MyTodoList.ApiTests\MyTodoList.ApiTests.csproj", "{2AD1F7A4-970D-4214-B3BA-AA59BEA4EFD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTodoList.Api.Tests", "MyTodoList.ApiTests\MyTodoList.Api.Tests.csproj", "{2AD1F7A4-970D-4214-B3BA-AA59BEA4EFD7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTodoList.Data", "MyTodoList.Data\MyTodoList.Data.csproj", "{42159AF0-48DE-4D19-B762-D67869BF7241}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTodoList.DataTests", "MyTodoList.DataTests\MyTodoList.DataTests.csproj", "{723E81B5-4E00-4637-BF0E-F9AE9D294FDB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTodoList.Data.Tests", "MyTodoList.DataTests\MyTodoList.Data.Tests.csproj", "{723E81B5-4E00-4637-BF0E-F9AE9D294FDB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
