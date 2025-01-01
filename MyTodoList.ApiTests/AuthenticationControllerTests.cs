@@ -4,7 +4,7 @@ using Moq;
 using MyTodoList.Api.Authentication.Models;
 using MyTodoList.Api.Controllers;
 using MyTodoList.Api.Services;
-using MyTodoList.Data;
+using MyTodoList.Data.Models;
 using System.Reflection;
 
 namespace MyTodoList.Api.Tests;
