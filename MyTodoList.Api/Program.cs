@@ -44,6 +44,8 @@ builder.Services.AddIdentityCore<User>(options =>
 
 builder.Services.AddDbContext<ApiDbContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 var app = builder.Build();
