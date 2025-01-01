@@ -4,22 +4,22 @@ using Moq;
 using MyTodoList.Api.Authentication.Models;
 using MyTodoList.Api.Controllers;
 using MyTodoList.Api.Services;
-using MyTodoList.Data;
+using MyTodoList.Data.Models;
 using System.Reflection;
 
 namespace MyTodoList.Api.Tests;
 
 public class AuthenticationControllerTests
 {
-    private Mock<UserManager<User>> _mockUserManager;
-    private Mock<IJwtService> _mockJwtService;
-    private AuthenticationController _controller;
+    private Mock<UserManager<User>> _mockUserManager = default!;
+    private Mock<IJwtService> _mockJwtService = default!;
+    private AuthenticationController _controller = default!;
 
     [SetUp]
     public void Setup()
     {
-        _mockUserManager = new Mock<UserManager<User>>(Mock.Of<IUserStore<User>>(), null, null, null, null, null, null,
-            null, null);
+        _mockUserManager = new Mock<UserManager<User>>(Mock.Of<IUserStore<User>>(), null!, null!, null!, null!, null!, null!,
+            null!, null!);
 
         _mockJwtService = new Mock<IJwtService>();
 
@@ -42,8 +42,8 @@ public class AuthenticationControllerTests
 
         // Assert
         Assert.That(result, Is.InstanceOf<BadRequestObjectResult>());
-        var badRequestResult = result as BadRequestObjectResult;
-        Assert.That(((SerializableError)badRequestResult.Value).ContainsKey("ConfirmPassword"), Is.True);
+        var badRequestResult = (result as BadRequestObjectResult)!;
+        Assert.That(((SerializableError)badRequestResult.Value!).ContainsKey("ConfirmPassword"), Is.True);
     }
 
     [Test]
@@ -77,8 +77,6 @@ public class AuthenticationControllerTests
             ConfirmPassword = "password1"
         };
 
-        var user = new User { UserName = model.UserName };
-
         _mockUserManager.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>()))
             .ReturnsAsync(IdentityResult.Success);
 
@@ -90,7 +88,7 @@ public class AuthenticationControllerTests
         // Assert
         Assert.That(result, Is.InstanceOf<OkObjectResult>());
         var okResult = result as OkObjectResult;
-        var actualToken = GetTokenFromOkObjectResult(okResult);
+        var actualToken = GetTokenFromOkObjectResult(okResult!);
         Assert.That(actualToken, Is.EqualTo("sampleToken"));
     }
 
@@ -126,7 +124,7 @@ public class AuthenticationControllerTests
         };
 
         _mockUserManager.Setup(x => x.FindByNameAsync(model.UserName))
-            .ReturnsAsync((User)null);
+            .ReturnsAsync((User?)null);
 
         // Act
         var result = await _controller.Login(model);
@@ -134,7 +132,7 @@ public class AuthenticationControllerTests
         // Assert
         Assert.That(result, Is.InstanceOf<UnauthorizedObjectResult>());
         var unauthorizedResult = result as UnauthorizedObjectResult;
-        Assert.That(unauthorizedResult.Value, Is.EqualTo("Incorrect user name"));
+        Assert.That(unauthorizedResult!.Value, Is.EqualTo("Incorrect user name"));
     }
 
     [Test]
@@ -161,7 +159,7 @@ public class AuthenticationControllerTests
         // Assert
         Assert.That(result, Is.InstanceOf<UnauthorizedObjectResult>());
         var unauthorizedResult = result as UnauthorizedObjectResult;
-        Assert.That(unauthorizedResult.Value, Is.EqualTo("Incorrect password"));
+        Assert.That(unauthorizedResult!.Value, Is.EqualTo("Incorrect password"));
     }
 
     [Test]
@@ -190,14 +188,15 @@ public class AuthenticationControllerTests
         // Assert
         Assert.That(result, Is.InstanceOf<OkObjectResult>());
         var okResult = result as OkObjectResult;
-        var actualToken = GetTokenFromOkObjectResult(okResult);
+        var actualToken = GetTokenFromOkObjectResult(okResult!);
         Assert.That(actualToken, Is.EqualTo("sampleToken"));
     }
 
-    private string GetTokenFromOkObjectResult(OkObjectResult result)
+    private static string GetTokenFromOkObjectResult(OkObjectResult result)
     {
-        var value = result.Value;
-        PropertyInfo tokenProperty = value.GetType().GetProperty("Token");
-        return tokenProperty.GetValue(value).ToString();
+        var value = result.Value!;
+        PropertyInfo? tokenProperty = value.GetType().GetProperty("Token");
+        return tokenProperty?.GetValue(value)?.ToString() ??
+               throw new InvalidCastException("Result value does not have property 'Token'");
     }
 }

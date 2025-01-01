@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyTodoList.Api.Authentication.Models;
 using MyTodoList.Api.Services;
-using MyTodoList.Data;
+using MyTodoList.Data.Models;
 
 namespace MyTodoList.Api.Controllers
 {

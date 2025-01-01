@@ -1,4 +1,4 @@
-﻿using MyTodoList.Data;
+﻿using MyTodoList.Data.Models;
 
 namespace MyTodoList.Api.Services
 {

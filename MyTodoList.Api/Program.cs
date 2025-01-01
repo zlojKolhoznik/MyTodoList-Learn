@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using MyTodoList.Api.Authentication;
 using MyTodoList.Api.Services;
 using MyTodoList.Data;
+using MyTodoList.Data.Models;
+using MyTodoList.Data.Repositories;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,9 +43,12 @@ builder.Services.AddIdentityCore<User>(options =>
     .AddUserStore<ApiUserStore>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddDbContext<ApiDbContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<ApiDbContext>(options => options.UseMySQL(builder.Configuration.GetConnectionString("DefaultConnection")!));
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IJwtService, JwtService>();
+builder.Services.AddScoped<IToDoItemRepository, ToDoItemRepository>();
 
 var app = builder.Build();
 
@@ -60,4 +65,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run();
+await app.RunAsync();
